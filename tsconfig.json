@@ -1,3 +1,18 @@
 {
-  "extends": "@react-native/typescript-config/tsconfig.json"
+  "extends": "@react-native/typescript-config/tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "noEmit": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "jsx": "react-native",
+    "baseUrl": "./src",
+    "paths": {
+      "@app/*": ["app/*"],
+      "@modules/*": ["modules/*"]
+    }
+  },
+  "include": ["src", "index.tsx"],
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
 }
