@@ -33,10 +33,6 @@ const CryptoDashboard: React.FC<CryptoDashboardProps> = ({navigation}) => {
     dispatch(fetchCryptos());
   }, [dispatch]);
 
-  useEffect(() => {
-    console.log('Data received:', data);
-  }, [data]);
-
   const cryptoList = useMemo(() => data ?? [], [data]);
 
   const navigateToDetail = (crypto: any) => {
