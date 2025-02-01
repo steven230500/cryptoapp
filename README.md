@@ -53,21 +53,17 @@ npx react-native run-ios
 
 ## 🎥 Capturas de Pantalla y Demo
 
-| 📱 Dashboard                                   | 📈 Detalle                                |
+## 📱 Android
+
+| 📱 Dashboard (Android)                         | 📈 Detalle (Android)                      |
 | ---------------------------------------------- | ----------------------------------------- |
 | ![Dashboard](assets/screenshots/dashboard.png) | ![Detalle](assets/screenshots/detail.png) |
 
-### 📹 Demo en GIF
+## 🍎 iOS
 
-Puedes ver una demo en acción aquí:
-![Demo](assets/screenshots/demo.gif)
-
-**Cómo grabar y agregar un GIF**:
-
-1. **Android:** Usar `adb shell screenrecord` o la grabadora de Android Studio.
-2. **iOS:** Grabar con QuickTime Player.
-3. Convertir el video a **GIF** con [ezgif](https://ezgif.com/video-to-gif).
-4. Guardarlo en `assets/screenshots/demo.gif` y referenciarlo en el README.
+| 📱 Dashboard (iOS)                             | 📈 Detalle (iOS)                          |
+| ---------------------------------------------- | ----------------------------------------- |
+| ![Dashboard](assets/screenshots/dashboard.png) | ![Detalle](assets/screenshots/detail.png) |
 
 ## 🔗 API Utilizada
 

@@ -4,21 +4,28 @@ import {useSelector, useDispatch} from 'react-redux';
 import {RootState, AppDispatch} from '../../../../app/config/reduxStore';
 import {fetchCryptos} from '../redux/cryptoSlice';
 import CryptoHeader from '../components/CryptoHeader';
-import CryptoChart from '../components/CryptoChart';
 import CryptoSearchBar from '../components/CryptoSearchBar';
 import CryptoList from '../components/CryptoList';
+import BottomBar from '../components/BottomBar';
+import SkeletonPlaceholder from 'react-native-skeleton-placeholder';
+import {StackNavigationProp} from '@react-navigation/stack';
+import {STRINGS} from '../../../../app/strings';
+import {setSelectedCrypto} from '../redux/cryptoSlice';
 
-const CryptoDashboard: React.FC = () => {
+type RootStackParamList = {
+  CryptoDetail: {id: string};
+};
+
+type CryptoDashboardProps = {
+  navigation: StackNavigationProp<RootStackParamList, 'CryptoDetail'>;
+};
+
+const CryptoDashboard: React.FC<CryptoDashboardProps> = ({navigation}) => {
   const dispatch = useDispatch<AppDispatch>();
   const {data, loading, error} = useSelector(
     (state: RootState) => state.crypto,
-  ) as unknown as {
-    data: {data: any[]};
-    loading: boolean;
-    error: string | null;
-  };
+  );
 
-  const [selectedCrypto, setSelectedCrypto] = useState<any | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [sortOption, setSortOption] = useState('price_asc');
 
@@ -26,25 +33,41 @@ const CryptoDashboard: React.FC = () => {
     dispatch(fetchCryptos());
   }, [dispatch]);
 
-  const cryptoList = useMemo(() => data?.data ?? [], [data]);
-
   useEffect(() => {
-    if (cryptoList.length > 0 && !selectedCrypto) {
-      setSelectedCrypto(cryptoList[0]);
+    console.log('Data received:', data);
+  }, [data]);
+
+  const cryptoList = useMemo(() => data ?? [], [data]);
+
+  const navigateToDetail = (crypto: any) => {
+    if (crypto.id) {
+      dispatch(setSelectedCrypto(crypto));
+      navigation.navigate('CryptoDetail', {id: crypto.id});
     }
-  }, [cryptoList, selectedCrypto]);
+  };
 
   if (loading) {
     return (
-      <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Cargando...</Text>
+      <View style={styles.skeletonContainer}>
+        <SkeletonPlaceholder>
+          <View>
+            <View style={styles.skeletonHeader} />
+            <View style={styles.skeletonListItem} />
+            <View style={styles.skeletonListItem} />
+            <View style={styles.skeletonListItem} />
+          </View>
+        </SkeletonPlaceholder>
       </View>
     );
   }
+
   if (error) {
     return (
       <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>Error: {error}</Text>
+        <Text style={styles.errorText}>
+          {STRINGS.error}
+          {error}
+        </Text>
       </View>
     );
   }
@@ -56,22 +79,28 @@ const CryptoDashboard: React.FC = () => {
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
       />
-      {selectedCrypto && <CryptoChart selectedCrypto={selectedCrypto} />}
       <CryptoList
         cryptoList={cryptoList}
         searchQuery={searchQuery}
         sortOption={sortOption}
         setSortOption={setSortOption}
-        setSelectedCrypto={setSelectedCrypto}
+        navigateToDetail={navigateToDetail}
       />
+      <BottomBar cryptoList={cryptoList} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: '#121212', padding: 16},
-  loadingContainer: {flex: 1, justifyContent: 'center', alignItems: 'center'},
-  loadingText: {color: 'white', fontSize: 16},
+  skeletonContainer: {flex: 1, justifyContent: 'center', padding: 16},
+  skeletonHeader: {width: '90%', height: 50, marginBottom: 20, borderRadius: 8},
+  skeletonListItem: {
+    width: '100%',
+    height: 60,
+    marginBottom: 10,
+    borderRadius: 8,
+  },
   errorContainer: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   errorText: {color: 'red', fontSize: 16},
 });

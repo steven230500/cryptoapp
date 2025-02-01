@@ -1,5 +1,6 @@
 import React from 'react';
 import {TextInput, StyleSheet} from 'react-native';
+import {STRINGS} from '../../../../app/strings';
 
 interface Props {
   searchQuery: string;
@@ -10,7 +11,7 @@ const CryptoSearchBar: React.FC<Props> = ({searchQuery, setSearchQuery}) => {
   return (
     <TextInput
       style={styles.searchBar}
-      placeholder="Buscar criptomoneda..."
+      placeholder={STRINGS.searchPlaceholder}
       placeholderTextColor="#888"
       value={searchQuery}
       onChangeText={setSearchQuery}

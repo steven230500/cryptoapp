@@ -1,7 +1,8 @@
+import {API_URL} from '../../app/constants';
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://api.coinlore.net/api/tickers/',
+  baseURL: API_URL,
   timeout: 5000,
   headers: {
     'Content-Type': 'application/json',

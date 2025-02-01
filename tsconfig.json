@@ -13,6 +13,6 @@
       "@modules/*": ["modules/*"]
     }
   },
-  "include": ["src", "index.tsx"],
+  "include": ["src", "index.tsx", "src/types"],
   "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
 }

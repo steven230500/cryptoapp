@@ -5,11 +5,13 @@ const CryptoHeader: React.FC = () => {
   return (
     <View style={styles.header}>
       <Image
-        source={{uri: 'https://i.pravatar.cc/300'}}
+        source={{uri: 'https://i.pravatar.cc/301'}}
         style={styles.avatar}
+        testID="user-avatar"
       />
+
       <View>
-        <Text style={styles.username}>Ralph Edwards</Text>
+        <Text style={styles.username}>User</Text>
         <Text style={styles.balance}>$88,648.43</Text>
       </View>
     </View>
