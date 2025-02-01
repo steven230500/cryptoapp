@@ -61,9 +61,9 @@ npx react-native run-ios
 
 ## 🍎 iOS
 
-| 📱 Dashboard (iOS)                             | 📈 Detalle (iOS)                          |
-| ---------------------------------------------- | ----------------------------------------- |
-| ![Dashboard](assets/screenshots/dashboard.png) | ![Detalle](assets/screenshots/detail.png) |
+| 📱 Dashboard (iOS)                       | 📈 Detalle (iOS)                         |
+| ---------------------------------------- | ---------------------------------------- |
+| ![Dashboard](assets/screenshots/ios.png) | ![Detalle](assets/screenshots/ios_d.png) |
 
 ## 🔗 API Utilizada
 

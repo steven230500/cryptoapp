@@ -6,6 +6,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  SafeAreaView,
+  Platform,
 } from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import {RouteProp} from '@react-navigation/native';
@@ -62,7 +64,8 @@ const CryptoDetailScreen = ({
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      {/* Botón de Retroceso Mejorado */}
       <TouchableOpacity
         style={styles.backButton}
         onPress={() => navigation.goBack()}>
@@ -142,16 +145,38 @@ const CryptoDetailScreen = ({
           {STRINGS.supply}: {crypto.csupply} {crypto.symbol}
         </Text>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {flex: 1, backgroundColor: '#121212', padding: 16},
-  backButton: {position: 'absolute', top: 20, left: 20, zIndex: 10},
-  header: {alignItems: 'center', marginTop: 40, marginBottom: 20},
-  cryptoImage: {width: 100, height: 100, marginBottom: 10},
-  cryptoName: {color: 'white', fontSize: 22, fontWeight: 'bold'},
+  container: {
+    flex: 1,
+    backgroundColor: '#121212',
+    padding: 16,
+    paddingTop: Platform.OS === 'ios' ? 40 : 16, // Ajuste para evitar notch en iOS
+  },
+  backButton: {
+    position: 'absolute',
+    top: Platform.OS === 'ios' ? 50 : 20, // Ajuste para iOS
+    left: 20,
+    zIndex: 10,
+  },
+  header: {
+    alignItems: 'center',
+    marginTop: 60, // Ajuste para evitar solapamiento
+    marginBottom: 20,
+  },
+  cryptoImage: {
+    width: 100,
+    height: 100,
+    marginBottom: 10,
+  },
+  cryptoName: {
+    color: 'white',
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
   timeSelector: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -163,24 +188,63 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: '#333',
   },
-  activeTimeButton: {backgroundColor: '#00FF00'},
-  timeText: {color: 'white', fontSize: 14},
-  chartContainer: {alignItems: 'center', marginBottom: 20},
-  chartStyle: {borderRadius: 10},
-  detailsContainer: {backgroundColor: '#1E1E1E', padding: 16, borderRadius: 10},
-  detailText: {color: 'white', fontSize: 16, marginBottom: 5},
-  positive: {color: '#00FF00'},
-  negative: {color: '#FF4C4C'},
-  errorText: {color: 'red', fontSize: 16, textAlign: 'center', marginTop: 20},
-  skeletonContainer: {alignItems: 'center', width: '90%'},
-  skeletonHeader: {width: 200, height: 20, marginBottom: 20, borderRadius: 5},
+  activeTimeButton: {
+    backgroundColor: '#00FF00',
+  },
+  timeText: {
+    color: 'white',
+    fontSize: 14,
+  },
+  chartContainer: {
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  chartStyle: {
+    borderRadius: 10,
+  },
+  detailsContainer: {
+    backgroundColor: '#1E1E1E',
+    padding: 16,
+    borderRadius: 10,
+  },
+  detailText: {
+    color: 'white',
+    fontSize: 16,
+    marginBottom: 5,
+  },
+  positive: {
+    color: '#00FF00',
+  },
+  negative: {
+    color: '#FF4C4C',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 16,
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  skeletonContainer: {
+    alignItems: 'center',
+    width: '90%',
+  },
+  skeletonHeader: {
+    width: 200,
+    height: 20,
+    marginBottom: 20,
+    borderRadius: 5,
+  },
   skeletonChart: {
     width: '90%',
     height: 220,
     marginBottom: 20,
     borderRadius: 10,
   },
-  skeletonDetails: {width: '90%', height: 100, borderRadius: 10},
+  skeletonDetails: {
+    width: '90%',
+    height: 100,
+    borderRadius: 10,
+  },
 });
 
 export default CryptoDetailScreen;
