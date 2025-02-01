@@ -7,7 +7,6 @@ import {
   TextInput,
 } from 'react-native';
 import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
-import {Picker} from '@react-native-picker/picker';
 import {STRINGS} from '../../../../app/strings';
 
 interface Props {
@@ -15,7 +14,8 @@ interface Props {
 }
 
 const BottomBar: React.FC<Props> = ({cryptoList}) => {
-  const actionSheetRef = useRef<ActionSheetRef>(null);
+  const actionSheetRefFrom = useRef<ActionSheetRef>(null);
+  const actionSheetRefTo = useRef<ActionSheetRef>(null);
   const [cryptoFrom, setCryptoFrom] = useState(cryptoList[0]?.id || '');
   const [cryptoTo, setCryptoTo] = useState(cryptoList[1]?.id || '');
   const [amount, setAmount] = useState('1');
@@ -38,14 +38,14 @@ const BottomBar: React.FC<Props> = ({cryptoList}) => {
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.exchangeButton}
-          onPress={() => actionSheetRef.current?.show()}>
+          onPress={() => actionSheetRefFrom.current?.show()}>
           <Text style={styles.buttonText}>💱 {STRINGS.convert}</Text>
         </TouchableOpacity>
       </View>
 
       <ActionSheet
         testID="action-sheet"
-        ref={actionSheetRef} // 🛠️ Cambio aquí
+        ref={actionSheetRefFrom}
         containerStyle={styles.sheetContainer}>
         <Text style={styles.sheetTitle}>{STRINGS.convert}</Text>
 
@@ -60,33 +60,55 @@ const BottomBar: React.FC<Props> = ({cryptoList}) => {
           onChangeText={setAmount}
         />
 
+        {/* Selector de "From" */}
         <Text style={styles.label}>{STRINGS.from}</Text>
-        <Picker
-          selectedValue={cryptoFrom}
-          onValueChange={setCryptoFrom}
-          style={styles.picker}>
+        <TouchableOpacity
+          style={styles.selectContainer}
+          onPress={() => actionSheetRefFrom.current?.show()}>
+          <Text style={styles.selectText}>
+            {fromCrypto?.name || STRINGS.selectCrypto}
+          </Text>
+        </TouchableOpacity>
+        <ActionSheet
+          ref={actionSheetRefFrom}
+          containerStyle={styles.sheetContainer}>
           {cryptoList.map(crypto => (
-            <Picker.Item
+            <TouchableOpacity
               key={crypto.id}
-              label={crypto.name}
-              value={crypto.id}
-            />
+              style={styles.optionButton}
+              onPress={() => {
+                setCryptoFrom(crypto.id);
+                actionSheetRefFrom.current?.hide();
+              }}>
+              <Text style={styles.optionText}>{crypto.name}</Text>
+            </TouchableOpacity>
           ))}
-        </Picker>
+        </ActionSheet>
 
+        {/* Selector de "To" */}
         <Text style={styles.label}>{STRINGS.to}</Text>
-        <Picker
-          selectedValue={cryptoTo}
-          onValueChange={setCryptoTo}
-          style={styles.picker}>
+        <TouchableOpacity
+          style={styles.selectContainer}
+          onPress={() => actionSheetRefTo.current?.show()}>
+          <Text style={styles.selectText}>
+            {toCrypto?.name || STRINGS.selectCrypto}
+          </Text>
+        </TouchableOpacity>
+        <ActionSheet
+          ref={actionSheetRefTo}
+          containerStyle={styles.sheetContainer}>
           {cryptoList.map(crypto => (
-            <Picker.Item
+            <TouchableOpacity
               key={crypto.id}
-              label={crypto.name}
-              value={crypto.id}
-            />
+              style={styles.optionButton}
+              onPress={() => {
+                setCryptoTo(crypto.id);
+                actionSheetRefTo.current?.hide();
+              }}>
+              <Text style={styles.optionText}>{crypto.name}</Text>
+            </TouchableOpacity>
           ))}
-        </Picker>
+        </ActionSheet>
 
         <Text style={styles.conversionResult}>
           {amount} {fromCrypto?.symbol} ≈ {convertedAmount} {toCrypto?.symbol}
@@ -94,7 +116,7 @@ const BottomBar: React.FC<Props> = ({cryptoList}) => {
 
         <TouchableOpacity
           style={styles.convertButton}
-          onPress={() => actionSheetRef.current?.hide()}>
+          onPress={() => actionSheetRefFrom.current?.hide()}>
           <Text style={styles.buttonText}>{STRINGS.convert}</Text>
         </TouchableOpacity>
       </ActionSheet>
@@ -138,11 +160,25 @@ const styles = StyleSheet.create({
     fontSize: 14,
     marginTop: 10,
   },
-  picker: {
+  selectContainer: {
     backgroundColor: '#333',
-    color: 'white',
-    marginBottom: 10,
+    padding: 12,
     borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  selectText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  optionButton: {
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  optionText: {
+    color: 'white',
+    fontSize: 16,
   },
   input: {
     backgroundColor: '#222',

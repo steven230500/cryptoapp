@@ -1,4 +1,4 @@
-import React, {useMemo} from 'react';
+import React, {useMemo, useRef} from 'react';
 import {
   Text,
   FlatList,
@@ -8,9 +8,9 @@ import {
   Image,
 } from 'react-native';
 import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
-import {Picker} from '@react-native-picker/picker';
 import ArrowRightIcon from '../../../../../assets/icons/arrow_right.svg';
-import {STRINGS} from '../../../../app//strings';
+import {STRINGS} from '../../../../app/strings';
+import ActionSheet, {ActionSheetRef} from 'react-native-actions-sheet';
 
 interface Props {
   cryptoList: any[];
@@ -19,6 +19,13 @@ interface Props {
   setSortOption: (option: string) => void;
   navigateToDetail: (crypto: any) => void;
 }
+
+const SORT_OPTIONS = [
+  {label: STRINGS.sortByPriceAsc, value: 'price_asc'},
+  {label: STRINGS.sortByPriceDesc, value: 'price_desc'},
+  {label: STRINGS.sortByNameAsc, value: 'name_asc'},
+  {label: STRINGS.sortByNameDesc, value: 'name_desc'},
+];
 
 const CryptoList: React.FC<Props> = ({
   cryptoList,
@@ -51,19 +58,36 @@ const CryptoList: React.FC<Props> = ({
       });
   }, [cryptoList, searchQuery, sortOption]);
 
+  const actionSheetRef = useRef<ActionSheetRef>(null);
+
   return (
     <View style={styles.container}>
-      <Picker
-        selectedValue={sortOption}
-        style={styles.picker}
-        dropdownIconColor="white"
-        onValueChange={setSortOption}>
-        <Picker.Item label={STRINGS.sortByPriceAsc} value="price_asc" />
-        <Picker.Item label={STRINGS.sortByPriceDesc} value="price_desc" />
-        <Picker.Item label={STRINGS.sortByNameAsc} value="name_asc" />
-        <Picker.Item label={STRINGS.sortByNameDesc} value="name_desc" />
-      </Picker>
+      {/* Selector de ordenamiento */}
+      <TouchableOpacity
+        style={styles.selectContainer}
+        onPress={() => actionSheetRef.current?.show()}>
+        <Text style={styles.selectText}>
+          {SORT_OPTIONS.find(option => option.value === sortOption)?.label ||
+            STRINGS.sortByPriceAsc}
+        </Text>
+      </TouchableOpacity>
 
+      <ActionSheet ref={actionSheetRef} containerStyle={styles.sheetContainer}>
+        <Text style={styles.sheetTitle}>{STRINGS.sortBy}</Text>
+        {SORT_OPTIONS.map(option => (
+          <TouchableOpacity
+            key={option.value}
+            style={styles.optionButton}
+            onPress={() => {
+              setSortOption(option.value);
+              actionSheetRef.current?.hide();
+            }}>
+            <Text style={styles.optionText}>{option.label}</Text>
+          </TouchableOpacity>
+        ))}
+      </ActionSheet>
+
+      {/* Lista de criptomonedas */}
       <FlatList
         data={filteredCryptoList}
         keyExtractor={item => item.id.toString()}
@@ -97,11 +121,37 @@ const CryptoList: React.FC<Props> = ({
 
 const styles = StyleSheet.create({
   container: {flex: 1, marginTop: 10},
-  picker: {
+  selectContainer: {
     backgroundColor: '#1E1E1E',
-    color: 'white',
-    marginBottom: 10,
+    padding: 12,
     borderRadius: 8,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  selectText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  sheetContainer: {
+    backgroundColor: '#1E1E1E',
+    padding: 20,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+  },
+  sheetTitle: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10,
+  },
+  optionButton: {
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  optionText: {
+    color: 'white',
+    fontSize: 16,
   },
   card: {
     flexDirection: 'row',

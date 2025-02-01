@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useState} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, SafeAreaView} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
 import {RootState, AppDispatch} from '../../../../app/config/reduxStore';
 import {fetchCryptos} from '../redux/cryptoSlice';
@@ -73,7 +73,7 @@ const CryptoDashboard: React.FC<CryptoDashboardProps> = ({navigation}) => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <CryptoHeader />
       <CryptoSearchBar
         searchQuery={searchQuery}
@@ -87,7 +87,7 @@ const CryptoDashboard: React.FC<CryptoDashboardProps> = ({navigation}) => {
         navigateToDetail={navigateToDetail}
       />
       <BottomBar cryptoList={cryptoList} />
-    </View>
+    </SafeAreaView>
   );
 };
 
