@@ -2,7 +2,7 @@
 
 ## 🚀 Descripción
 
-CryptoApp es una aplicación de **React Native** que permite visualizar y gestionar información sobre criptomonedas en tiempo real. Permite filtrar, ordenar y ver detalles con una UI moderna e intuitiva.
+CryptoApp es una aplicación de **React Native** que permite visualizar y gestionar información sobre criptomonedas en tiempo real. Permite filtrar, ordenar y ver detalles.
 
 ## 📂 Estructura del Proyecto
 
@@ -28,7 +28,7 @@ assets/
 ### 🔹 Requisitos Previos
 
 - Node.js 18+
-- Expo CLI o React Native CLI
+- React Native CLI
 - Android Studio / Xcode (para emuladores)
 
 ### 🔹 Instalación
@@ -42,13 +42,13 @@ npm install
 ### 🔹 Ejecución en Android
 
 ```sh
-npx react-native run-android
+npm run android
 ```
 
 ### 🔹 Ejecución en iOS
 
 ```sh
-npx react-native run-ios
+npm run ios
 ```
 
 ## 🎥 Capturas de Pantalla y Demo
